@@ -17,7 +17,7 @@ const Buttonn = styled.div`
   font-weight:bold;
   color:white;
   background:#b10240;
-  height:80px
+  height:80px;
 `
 
 export default function Slider(props: iSlider) {

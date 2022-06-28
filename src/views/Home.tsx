@@ -6,28 +6,22 @@ import Slider from "../components/layout/Slider";
 
 export default function Home() {
   const { data: upcoming, isSuccess } = useFetchUpcomingMoviesQuery(1);
-  // const [sliderData =[], setSliderData] = useState(new Array<iSliderCardData>);
   const [sliderData , setSliderData] = useState(new Array<iSliderCardData>);
 
 
   useEffect(() => {
     if(upcoming){
-
       const upComingProps = upcoming.results.map((el) => {
-        
         return {
           title: el.title,
           subtitle: el.vote_average,
           imgSrc: IMG_BASE_URL + el.poster_path,
         };
-        
       });
-      
       setSliderData(upComingProps);
     }
-    
   }, [upcoming]);
-console.log(sliderData)
+
   return ( 
     <div>
     //TODO: List Popular tv shows on streamings
