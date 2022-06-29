@@ -7,6 +7,8 @@ interface iVertical {
   makeOnCenter?: boolean;
   justifyContent?: string;
   textAlign?:string;
+  width?:string;
+  height?:string;
 }
 
 const Vertical = styled.div<iVertical>`
@@ -15,7 +17,9 @@ const Vertical = styled.div<iVertical>`
   align-items: ${(props) => props.alignItems};
   width: ${(props) => props.widthPercent}%;
   width: ${(props) => props.widthPixel}px;
+  width: ${(props)=>props.width};
   text-align: ${props => props.textAlign};
+  height:${props =>props.height};
   justify-content: ${(props) => props.justifyContent};
     ${(props) => {
       if (props.makeOnCenter) {

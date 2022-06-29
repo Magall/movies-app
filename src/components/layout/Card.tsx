@@ -9,7 +9,8 @@ const Container = styled.div`
   color: white;
   border: 1px solid gold;
   border-radius: 8px;
-  width: fit-content;
+  height: auto;
+  box-sizing: border-box;
   img {
     border-radius: 8px 8px 0px 0px;
   }
@@ -17,20 +18,22 @@ const Container = styled.div`
 
 const Footer = styled(Vertical)`
   padding: 8px;
+  height: 80px;
+  box-sizing: border-box;
 `;
 
-export default function Card(props:iCard) {
+export default function Card(props: iCard) {
   return (
     <Container>
       <Vertical widthPixel={200} textAlign="center">
-        <img
-          width={props.width}
-          src={props.imgSrc}
-          alt=""
-        />
-        <Footer>
-          <Text margin="0 0 8px 0">{props.title}</Text>
-          <Text>{props.subtitle}</Text>
+        <img width={props.width} src={props.imgSrc} height={300} alt="" />
+        <Footer width={props.width + "px"} >
+          <Vertical alignItems="space-between" height="100%" justifyContent="space-around">
+            <Text fontWeight="600" margin="0 0 8px 0">
+              {props.title}
+            </Text>
+            <Text fontWeight="600">{props.subtitle}</Text>
+          </Vertical>
         </Footer>
       </Vertical>
     </Container>

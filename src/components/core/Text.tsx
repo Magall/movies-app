@@ -8,6 +8,9 @@ interface iText {
   padding?: string;
   color?: string;
   alignSelf?: string;
+  width?:string;
+  textOverflow?:string;
+  overflow?:string
 }
 
 const Text = styled.span<iText>`
@@ -18,5 +21,10 @@ const Text = styled.span<iText>`
   padding: ${(props) => props.padding || "0px 0px 0px 0px"};
   color: ${(props) => props.color || "inherit"};
   align-self: ${(props) => props.alignSelf};
+  text-overflow: ${(props) => props.textOverflow};
+  overflow: ${(props) => props.overflow};
+  width: ${(props) => props.width};
+
+
 `;
 export default Text;

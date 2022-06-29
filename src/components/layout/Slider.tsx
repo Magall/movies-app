@@ -11,14 +11,26 @@ interface iSlider {
   cardData: Array<iSliderCardData>;
 }
 
+const Button = styled.button`
+  box-sizing: border-box;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  background: #b10240;
+  width: 50px;
+  height: 50px;
+  outline-style: initial;
+  border-radius: 100px;
+  margin-right: 8px;
+  margin-left: 4px;
+  cursor: pointer;
+  border: 2px solid gold;
+`;
 
-const Buttonn = styled.div`
-  font-size:60px;
-  font-weight:bold;
-  color:white;
-  background:#b10240;
-  height:80px;
-`
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export default function Slider(props: iSlider) {
   const rowLimit = 20;
@@ -27,8 +39,6 @@ export default function Slider(props: iSlider) {
   const [maxScroll, setMaxScroll] = useState(0);
   const [positioned, setPositioned] = useState(false);
   const sliderRef = useRef<HTMLInputElement>(null);
-
-
 
   // Makes a little scroll on first render to user know it is a slider
   useEffect(() => {
@@ -77,7 +87,11 @@ export default function Slider(props: iSlider) {
       }}
     >
       {renderCards(cardsAmount)}
-      {cardsAmount + 2 >= rowLimit ? <Buttonn >+</Buttonn> : null}
+      {cardsAmount + 2 >= rowLimit ? (
+        <Container>
+          <Button>+</Button>
+        </Container>
+      ) : null}
     </Horizontal>
   );
 }
