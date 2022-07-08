@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useCurrentWidth } from "../../app/hooks";
 import Horizontal from "../core/Horizontal";
 import Card from "./Card";
-import Text from "../core/Text";
 import styled from "styled-components";
 import { iSliderCardData } from "../../interfaces";
 
@@ -36,7 +35,6 @@ export default function Slider(props: iSlider) {
   const rowLimit = 20;
   const width: number = useCurrentWidth();
   const [cardsAmount, setCardsAmount] = useState(Math.floor(width / 200) + 2);
-  const [maxScroll, setMaxScroll] = useState(0);
   const [positioned, setPositioned] = useState(false);
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -47,10 +45,8 @@ export default function Slider(props: iSlider) {
   }, []);
 
   // Recauculates max scroll when new cards are rendered, in order to request more cards properly
-  useEffect(() => {
-    setMaxScroll(
-      sliderRef.current!.scrollWidth - sliderRef.current!.clientWidth
-    );
+  const maxScroll:number = useMemo(() => {
+    return sliderRef.current!.scrollWidth - sliderRef.current!.clientWidth;
   }, [cardsAmount]);
 
   function handleScroll() {

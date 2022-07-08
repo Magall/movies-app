@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,useMemo, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { useNavigate } from "react-router-dom";
 import { IMG_BASE_URL } from "../../constants";
@@ -63,17 +63,8 @@ export default function SearchInput(props: iSearchInput) {
     }
   );
 
-  useEffect(() => {
-    if (props.searchQuery.length > 2) {
-      if (props.isSuccess) {
-        setShowPopper(true);
-      } else {
-        // TODO Create error handling for ui no results
-        setShowPopper(false);
-      }
-    } else {
-      setShowPopper(false);
-    }
+  useMemo(() => {
+    setShowPopper(props.searchQuery.length > 2 && props.isSuccess);
   }, [props]);
 
   function renderSeeMore() {
@@ -118,14 +109,14 @@ export default function SearchInput(props: iSearchInput) {
     }
   }
 
-  function handleClick(){
-    if(props.searchResult && props.searchResult.results.length>0){
+  function handleClick() {
+    if (props.searchResult && props.searchResult.results.length > 0) {
       setShowPopper(true);
     }
   }
 
   return (
-    <div onBlur={()=>setShowPopper(false)} onClick={handleClick}>
+    <div onBlur={() => setShowPopper(false)} onClick={handleClick}>
       <Input
         placeholder="Search for a TV show, movie or actor"
         margin="0px"

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { EMPTY, IMG_BASE_URL } from "../constants";
 import {
   iMultiSearch,
@@ -6,7 +6,7 @@ import {
   iSliderCardData,
 } from "../interfaces";
 import Vertical from "../components/core/Vertical";
-import { useFormatDate } from "../app/customHooks/useFormatDate";
+import { useFormatDate } from "../app/hooks/useFormatDate";
 import Slider from "../components/layout/Slider";
 import { H2 } from "../components/core/Titles";
 import List from "../components/layout/List";
@@ -119,7 +119,7 @@ export default function Home() {
           <H2>Trending</H2>
           <List
             data={trending}
-            handleListSelected={handleTrendingListChange}
+            handleListSelected={useCallback(handleTrendingListChange,[])}
             handlePageChange={handleTrendingListPageChange}
             rowComponent={trendingRow}
             radioElements={[

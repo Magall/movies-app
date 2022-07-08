@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 function getWidth(): number {
   return (
@@ -10,11 +10,11 @@ function getWidth(): number {
 
 export function useCurrentWidth(): number {
   // save current window width in the state object
-  let [width, setWidth] = useState(getWidth());
+  const [width, setWidth] = useState(getWidth());
 
   // in this case useEffect will execute only once because
   // it does not have any dependencies.
-  useEffect(() => {
+  useCallback(() => {
     // timeoutId for debounce mechanism
     let timeoutId: any = null;
     let isMounted = true;

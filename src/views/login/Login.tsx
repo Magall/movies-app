@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "./../../app/hooks";
+import {useAppDispatch}  from "../../app/hooks";
 import { showAlert } from "../../features/alert.slice";
 // @ts-ignore
 import Input from "@/components/core/Input";
