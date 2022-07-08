@@ -5,7 +5,7 @@ import Horizontal from "../core/Horizontal";
 import { GOLD, RED } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
-import Selector from "./Selector";
+import Selector from "./Radio";
 
 const ListContainer = styled.div`
   background: ${RED};
