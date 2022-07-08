@@ -1,0 +1,116 @@
+import { iMultiSearchResponse } from "../../interfaces";
+import Vertical from "../core/Vertical";
+import Text from "../core/Text";
+import Horizontal from "../core/Horizontal";
+import { GOLD, RED } from "../../constants";
+import styled from "styled-components";
+import { useState } from "react";
+import Selector from "./Selector";
+
+const ListContainer = styled.div`
+  background: ${RED};
+  border: 1px solid ${GOLD};
+  width: 500px;
+  padding: 12px;
+  margin: 8px;
+  border-radius: 8px;
+`;
+
+interface iList {
+  data: iMultiSearchResponse;
+  rowComponent: Function;
+  handlePageChange: Function;
+  handleListSelected?: Function;
+  radioElements: Array<SelectorElement>;
+}
+
+interface SelectorElement {
+  id: number;
+  text: string;
+}
+export default function List(props: iList) {
+  const size = 5;
+  const [start, setStart] = useState(1);
+
+  function renderRows() {
+    return props.data.results.map((el) => {
+      return props.rowComponent(el);
+    });
+  }
+
+  function handlePrev() {
+    if (props.data && props.data?.page > 1) {
+      props.handlePageChange(props.data?.page - 1);
+    }
+  }
+
+  function handleNext() {
+    if (props.data && props.data?.page < props.data?.total_pages) {
+      props.handlePageChange(props.data?.page + 1);
+    }
+  }
+
+  function renderListButtons() {
+    let buttons = new Array(size);
+
+    if (props.data.page < start && start - size > 0) {
+      setStart(start - size);
+    }
+
+    if (props.data.page > start + size ) {
+      setStart(props.data.page);
+    }
+
+    // if (props.data.page % size === size) {
+    //   setStart(props.data.page);
+    // }
+
+    for (let i = start; i <= start + (size - 1); i++) {
+      buttons.push(
+        <Text
+          key={i}
+          color={i === props.data.page ? GOLD : "white"}
+          fontWeight="600"
+          margin="0px 8px"
+          onClick={() => props.handlePageChange(i)}
+        >
+          {i}
+        </Text>
+      );
+    }
+    return buttons;
+  }
+
+  return (
+    <div>
+      <ListContainer>
+        {props.handleListSelected && (
+          <Selector
+            onChangeCallBack={props.handleListSelected}
+            radioElements={props.radioElements}
+          />
+        )}
+        <Vertical>{renderRows()}</Vertical>
+        <Horizontal justify="center">
+          <Text
+            fontWeight="600"
+            color="white"
+            onClick={handlePrev}
+            margin="0px 8px"
+          >
+            Previous
+          </Text>
+          {renderListButtons()}
+          <Text
+            fontWeight="600"
+            color="white"
+            onClick={handleNext}
+            margin="0px 8px"
+          >
+            Next
+          </Text>
+        </Horizontal>
+      </ListContainer>
+    </div>
+  );
+}

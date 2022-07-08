@@ -2,7 +2,14 @@
 .App{
     width:90% ;
     margin: auto;
-    height: 100vh;
+    min-height: 100vh;
     background-color:#282323;
 
+}
+html{
+    // background-color:#282323;
+
+}
+*{
+    box-sizing: border-box;
 }

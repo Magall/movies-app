@@ -1,4 +1,3 @@
-import { useAppSelector } from "./app/hooks";
 import MyRouter from "./router";
 import Alert from "./components/core/Alert";
 import "./App.scss";

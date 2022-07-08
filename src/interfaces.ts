@@ -1,5 +1,5 @@
 import { type } from "os";
-import { AlertType } from "./Enums";
+import { AlertType, DiscoverSortMovie, DiscoverSortTv } from "./Enums";
 
 interface iAlertStatus {
   show: boolean;
@@ -8,34 +8,50 @@ interface iAlertStatus {
 }
 
 interface iSliderCardData {
-  imgSrc: string | " ";
-  title: string;
-  subtitle?: string | number;
+  imgSrc: string | " "| undefined;
+  title: string | undefined;
+  subtitle?: string | number| undefined;
 }
 
 interface iCard extends iSliderCardData {
-  width:number;
+  width: number;
 }
 
 interface apiResponse {
   page: number;
-  totalPages: number;
-  totalResults: number;
+  total_pages: number;
   total_results: number;
 }
 
 interface iMultiSearch {
   id: number;
-  title: string;
-  vote_average: number;
-  vote_count: number;
-  poster_path: string;
-  backdrop_path: string;
-
+  title?: string;
+  vote_average?: number;
+  vote_count?: number;
+  poster_path?: string;
+  backdrop_path?: string;
+  popularity?: number;
+  name?: string;
+  release_date?: Date;
+  first_air_date?: Date;
 }
 
 interface iMultiSearchResponse extends apiResponse {
   results: iMultiSearch[];
+}
+
+interface iTrendingRequest {
+  mediaType: string;
+  timeWindow: string;
+  page?:number;
+}
+
+interface iDiscoverRequestMovie {
+  sort_by: DiscoverSortMovie;
+}
+
+interface iDiscoverRequestTv {
+  sort_by: DiscoverSortTv
 }
 
 export type {
@@ -44,5 +60,8 @@ export type {
   apiResponse,
   iMultiSearch,
   iCard,
-  iSliderCardData
+  iSliderCardData,
+  iTrendingRequest,
+  iDiscoverRequestMovie,
+  iDiscoverRequestTv,
 };
