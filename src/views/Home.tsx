@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EMPTY, IMG_BASE_URL } from "../constants";
-import { iMultiSearch, iSliderCardData } from "../interfaces";
+import {
+  iMultiSearch,
+  iMultiSearchResponse,
+  iSliderCardData,
+} from "../interfaces";
 import Vertical from "../components/core/Vertical";
 import { useFormatDate } from "../app/customHooks/useFormatDate";
 import Slider from "../components/layout/Slider";
 import { H2 } from "../components/core/Titles";
 import List from "../components/layout/List";
-import {
-  ListAction,
-  TrendingMedia,
-  DiscoverSortMovie,
-  DiscoverSortTv,
-} from "../Enums";
+import { TrendingMedia, DiscoverSortMovie, DiscoverSortTv } from "../Enums";
 import Horizontal from "../components/core/Horizontal";
 import {
   useFetchDiscoverMovieQuery,
@@ -34,7 +33,7 @@ const TextContainer = styled.div`
   margin-left: 12px;
 `;
 
-function trendingRow(el:iMultiSearch) {
+function trendingRow(el: iMultiSearch) {
   return (
     <Row key={el.id}>
       <Horizontal color="white" key={el.id}>
@@ -74,10 +73,9 @@ export default function Home() {
     sort_by: DiscoverSortTv.AirDate,
   });
 
-  // Transform data from request to component props
-  useEffect(() => {
-    if (upcoming) {
-      const upComingProps = upcoming.results.map((el) => {
+  function FormatDataToSlider(rawData: iMultiSearchResponse | undefined) {
+    if (rawData) {
+      const upComingProps = rawData.results.map((el) => {
         return {
           title: el.title,
           subtitle: el.vote_average,
@@ -86,7 +84,8 @@ export default function Home() {
       });
       setSliderData(upComingProps);
     }
-  }, [upcoming]);
+  }
+  useMemo(() => FormatDataToSlider(upcoming), [upcoming]);
 
   function handleTrendingListPageChange(currentPage: number) {
     let args = {

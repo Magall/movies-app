@@ -9,7 +9,7 @@ const Container = styled.div`
   color: white;
   border: 1px solid gold;
   border-radius: 8px;
-  height: auto;
+  height: 380px;
   box-sizing: border-box;
   img {
     border-radius: 8px 8px 0px 0px;
