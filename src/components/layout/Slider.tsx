@@ -45,8 +45,10 @@ export default function Slider(props: iSlider) {
   }, []);
 
   // Recauculates max scroll when new cards are rendered, in order to request more cards properly
-  const maxScroll:number = useMemo(() => {
-    return sliderRef.current!.scrollWidth - sliderRef.current!.clientWidth;
+  const maxScroll: number = useMemo(() => {
+    if (sliderRef.current) {
+      return sliderRef.current.scrollWidth - sliderRef.current!.clientWidth;
+    } else return 0;
   }, [cardsAmount]);
 
   function handleScroll() {

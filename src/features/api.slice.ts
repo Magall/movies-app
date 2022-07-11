@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { MediaType } from "../Enums";
 import {
-  iDiscoverRequestMovie,
-  iDiscoverRequestTv,
+  iDiscoverRequest,
   iMultiSearchResponse,
   iTrendingRequest,
 } from "../interfaces";
@@ -39,19 +39,15 @@ export const apiSlice = createApi({
         },
       }),
 
-      fetchDiscoverMovie: builder.query<
-        iMultiSearchResponse,
-        iDiscoverRequestMovie
-      >({
+      fetchDiscovery: builder.query<iMultiSearchResponse, iDiscoverRequest>({
         query(args) {
-          console.log(args);
-          return `/discover/movie?sort_by=${args.sort_by}`;
-        },
-      }),
-
-      fetchDiscoverTv: builder.query<iMultiSearchResponse, iDiscoverRequestTv>({
-        query(sort_by) {
-          return `/discover/tv?sort_by=${sort_by}`;
+          if (args.media_type === MediaType.Movies) {
+            return `/discover/movie?sort_by=${args.sort_by}&page=${args.page}`;
+          }
+          if (args.media_type === MediaType.TV) {
+            return `/discover/tv?sort_by=${args.sort_by}&page=${args.page}`;
+          }
+          return 'ERROR'
         },
       }),
     };
@@ -62,7 +58,6 @@ export const {
   useFetchMoviesQuery,
   useFetchUpcomingMoviesQuery,
   useFetchTrendingQuery,
-  useFetchDiscoverMovieQuery,
-  useFetchDiscoverTvQuery,
   useLazyFetchMoviesQuery,
+  useFetchDiscoveryQuery,
 } = apiSlice;

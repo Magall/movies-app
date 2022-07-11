@@ -24,7 +24,7 @@ const Subtitle = styled.span`
   color: gold;
 `;
 
-export default function Home() {
+export default function Nav() {
   const [movieQuery, setMovieQuery] = useState("");
   const [trigger, { data, isSuccess }] = useLazyFetchMoviesQuery();
 

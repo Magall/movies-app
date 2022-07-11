@@ -4,7 +4,7 @@ enum AlertType {
   Problem,
 }
 
-enum TrendingMedia {
+enum MediaType {
   Movies,
   TV,
 }
@@ -30,7 +30,7 @@ enum DiscoverSortTv {
 
 export {
   AlertType,
-  TrendingMedia,
+  MediaType,
   ListAction,
   DiscoverSortMovie,
   DiscoverSortTv,

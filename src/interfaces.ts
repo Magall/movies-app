@@ -1,5 +1,10 @@
 import { type } from "os";
-import { AlertType, DiscoverSortMovie, DiscoverSortTv } from "./Enums";
+import {
+  AlertType,
+  DiscoverSortMovie,
+  DiscoverSortTv,
+  MediaType,
+} from "./Enums";
 
 interface iAlertStatus {
   show: boolean;
@@ -8,9 +13,9 @@ interface iAlertStatus {
 }
 
 interface iSliderCardData {
-  imgSrc: string | " "| undefined;
+  imgSrc: string | " " | undefined;
   title: string | undefined;
-  subtitle?: string | number| undefined;
+  subtitle?: string | number | undefined;
 }
 
 interface iCard extends iSliderCardData {
@@ -43,15 +48,13 @@ interface iMultiSearchResponse extends apiResponse {
 interface iTrendingRequest {
   mediaType: string;
   timeWindow: string;
-  page?:number;
+  page?: number;
 }
 
-interface iDiscoverRequestMovie {
-  sort_by: DiscoverSortMovie;
-}
-
-interface iDiscoverRequestTv {
-  sort_by: DiscoverSortTv
+interface iDiscoverRequest {
+  sort_by: DiscoverSortMovie | DiscoverSortTv;
+  page?: number;
+  media_type: MediaType;
 }
 
 export type {
@@ -62,6 +65,5 @@ export type {
   iCard,
   iSliderCardData,
   iTrendingRequest,
-  iDiscoverRequestMovie,
-  iDiscoverRequestTv,
+  iDiscoverRequest,
 };
