@@ -57,6 +57,22 @@ interface iDiscoverRequest {
   media_type: MediaType;
 }
 
+interface iRequestTokenResponse {
+  success:boolean;
+  expires_at:string;
+  request_token:string;
+}
+
+interface iSessionResponse {
+  success:boolean;
+  session_id:string;
+}
+
+interface iLogin {
+  username:string;
+  password:string;
+  requestToken:string;
+}
 export type {
   iAlertStatus,
   iMultiSearchResponse,
@@ -66,4 +82,7 @@ export type {
   iSliderCardData,
   iTrendingRequest,
   iDiscoverRequest,
+  iRequestTokenResponse,
+  iSessionResponse,
+  iLogin
 };

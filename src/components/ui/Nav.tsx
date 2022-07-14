@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SearchInput from "../layout/SearchInput";
-import { useLazyFetchMoviesQuery } from "../../features/api.slice";
+import { useLazyFetchMoviesQuery } from "../../features/api";
 
 const TopBar = styled.div`
   background: linear-gradient(#471f38, #b10240);
@@ -38,9 +38,9 @@ export default function Nav() {
     <div>
       <TopBar>
         <Title>Movies World</Title>
-        <Subtitle>Movies</Subtitle>
-        <Subtitle>Tv Shows</Subtitle>
+    
         <Subtitle>My Lists</Subtitle>
+        <Subtitle>Exit</Subtitle>
 
         <SearchInput
           setSearchQuery={setMovieQuery}

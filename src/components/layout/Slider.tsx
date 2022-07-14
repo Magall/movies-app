@@ -65,7 +65,7 @@ export default function Slider(props: iSlider) {
     for (let i = 0; i < n; i++) {
       cards.push(
         <Card
-          key={i}
+          key={props.cardData[i].title}
           width={props.width}
           imgSrc={props.cardData[i].imgSrc}
           title={props.cardData[i].title}

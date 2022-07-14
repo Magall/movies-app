@@ -1,5 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
-import { EMPTY, IMG_BASE_URL } from "../constants";
+import {
+  EMPTY,
+  IMG_BASE_URL,
+  SORT_DISCOVER_MOVIES,
+  SORT_DISCOVER_TV,
+} from "../constants";
 import {
   iDiscoverRequest,
   iMultiSearch,
@@ -7,25 +12,22 @@ import {
 } from "../interfaces";
 import Vertical from "../components/core/Vertical";
 import { useFormatDate } from "../app/hooks/useFormatDate";
+import { Image as Img } from "../components/core/Img";
 import Slider from "../components/layout/Slider";
 import { H2 } from "../components/core/Titles";
 import List from "../components/layout/List";
-import { MediaType, DiscoverSortMovie, DiscoverSortTv } from "../Enums";
+import { MediaType, DiscoverSortMovie } from "../Enums";
 import Horizontal from "../components/core/Horizontal";
 import {
   useFetchDiscoveryQuery,
   useFetchUpcomingMoviesQuery,
   useFetchTrendingQuery,
-} from "../features/api.slice";
+} from "../features/api";
 import styled from "styled-components";
 import Text from "../components/core/Text";
 
 const Row = styled.div`
   padding: 4px;
-`;
-
-const Img = styled.img`
-  border-radius: 8px;
 `;
 
 const TextContainer = styled.div`
@@ -36,7 +38,12 @@ function trendingRow(el: iMultiSearch) {
   return (
     <Row key={el.id}>
       <Horizontal color="white" key={el.id}>
-        <Img src={IMG_BASE_URL + el.backdrop_path} alt="Movie poster" />
+        <Img
+          path={IMG_BASE_URL + el.backdrop_path}
+          width="200px"
+          height="113px"
+        />
+
         <TextContainer>
           <Vertical>
             <Text color="white" fontWeight="800" margin="8px 0px">
@@ -70,6 +77,18 @@ export default function Home() {
     page: 1,
   });
   const { data: discover = EMPTY } = useFetchDiscoveryQuery(discoverParams);
+  const sortOptions = useMemo(() => {
+    if (discoverParams.media_type === MediaType.Movies) {
+      return SORT_DISCOVER_MOVIES;
+    }
+
+    if (discoverParams.media_type === MediaType.TV) {
+      return SORT_DISCOVER_TV;
+    }
+
+    return [];
+  }, [discoverParams.media_type]);
+  const sliderData = useMemo(() => formatDataToSlider(upcoming), [upcoming]);
 
   function formatDataToSlider(rawData: iMultiSearchResponse = EMPTY) {
     const upComingProps = rawData.results.map((el) => {
@@ -81,7 +100,6 @@ export default function Home() {
     });
     return upComingProps;
   }
-  const sliderData = useMemo(() => formatDataToSlider(upcoming), [upcoming]);
 
   function handleTrendingListPageChange(currentPage: number) {
     let args = {
@@ -111,6 +129,13 @@ export default function Home() {
   function handleDiscoverListPageChange(currentPage: number) {
     let args = { ...discoverParams };
     args.page = currentPage;
+    setDiscoverParams(args);
+  }
+
+  function handleSort(selectEvent: any) {
+    let args = { ...discoverParams };
+    args.sort_by = selectEvent.target.value;
+    args.page = 1;
     setDiscoverParams(args);
   }
 
@@ -144,11 +169,13 @@ export default function Home() {
             data={discover}
             handleListSelected={useCallback(handleDiscoverListChange, [])}
             handlePageChange={handleDiscoverListPageChange}
+            handleSort={handleSort}
             rowComponent={trendingRow}
             radioElements={[
               { id: 0, text: "Movies" },
               { id: 1, text: "TV" },
             ]}
+            sortOptions={sortOptions}
           />
         </section>
       </Horizontal>

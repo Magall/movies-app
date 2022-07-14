@@ -17,7 +17,6 @@ const alertSlice = createSlice({
         state.show = action.payload.show;
         state.type = action.payload.type;
         state.messages = action.payload.messages;
-
     },
 
     hideAlert (state){

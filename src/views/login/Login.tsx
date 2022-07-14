@@ -3,26 +3,31 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {useAppDispatch}  from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { showAlert } from "../../features/alert.slice";
 // @ts-ignore
 import Input from "@/components/core/Input";
 import Button from "../../components/core/Button";
 import Vertical from "../../components/core/Vertical";
 import { AlertType } from "../../Enums";
-import { useFetchMoviesQuery } from "../../features/api.slice";
-
+import {
+  useCreateUserSessionMutation,
+  useFetchRequestTokenQuery,
+} from "../../features/api";
+import { H2 } from "../../components/core/Titles";
 interface LoginInputs {
   login: string;
   password: string;
 }
 
 const schema = yup.object({
-  login: yup.string().email().required().min(4),
+  login: yup.string().required().min(4),
   password: yup.string().required().min(5),
 });
 
 export default function Login() {
+  const [createUserSession, { data: createInfo }] =
+    useCreateUserSessionMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -37,11 +42,13 @@ export default function Login() {
       password: "",
     },
   });
+  const { data: requestToken } = useFetchRequestTokenQuery();
+  async function submitForm(data: LoginInputs) {
+    console.log(requestToken);
+    // createUserSession({ username: data.login, password: data.password });
+    // console.log(createInfo);
+    // navigate("/home");
 
-  function submitForm(data: LoginInputs) {
-    if (data.login === "a@a.com" && data.password === "aaaaaa") {
-      navigate('/home');
-    }
     reset();
   }
 
@@ -65,7 +72,7 @@ export default function Login() {
     <div id="LoginForm">
       <form onSubmit={handleSubmit(submitForm)}>
         <Vertical alignItems="center" widthPercent={50} makeOnCenter>
-          <h2>Movies World</h2>
+          <H2>Movies World</H2>
           <Input
             type="text"
             placeholder="Fill your email ..."

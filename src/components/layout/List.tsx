@@ -6,6 +6,7 @@ import { GOLD, RED } from "../../constants";
 import styled from "styled-components";
 import { useState } from "react";
 import Selector from "./Radio";
+import { Select } from "../core/Select";
 
 const ListContainer = styled.div`
   background: ${RED};
@@ -16,18 +17,21 @@ const ListContainer = styled.div`
   border-radius: 8px;
 `;
 
+interface SelectorElement {
+  id: number;
+  text: string;
+}
+
 interface iList {
   data: iMultiSearchResponse;
   rowComponent: Function;
   handlePageChange: Function;
   handleListSelected?: Function;
+  handleSort?: Function;
   radioElements: Array<SelectorElement>;
+  sortOptions?: Array<any>;
 }
 
-interface SelectorElement {
-  id: number;
-  text: string;
-}
 export default function List(props: iList) {
   const size = 5;
   const [start, setStart] = useState(1);
@@ -57,13 +61,9 @@ export default function List(props: iList) {
       setStart(start - size);
     }
 
-    if (props.data.page > start + size ) {
+    if (props.data.page > start + size) {
       setStart(props.data.page);
     }
-
-    // if (props.data.page % size === size) {
-    //   setStart(props.data.page);
-    // }
 
     for (let i = start; i <= start + (size - 1); i++) {
       buttons.push(
@@ -84,12 +84,25 @@ export default function List(props: iList) {
   return (
     <div>
       <ListContainer>
-        {props.handleListSelected && (
-          <Selector
-            onChangeCallBack={props.handleListSelected}
-            radioElements={props.radioElements}
-          />
-        )}
+        <Horizontal justify="space-between">
+          {props.handleListSelected && (
+            <Selector
+              onChangeCallBack={props.handleListSelected}
+              radioElements={props.radioElements}
+            />
+          )}
+          {props.sortOptions && (
+            <Select
+              onChange={(evt) =>
+                props.handleSort ? props.handleSort(evt) : null
+              }
+            >
+              {props.sortOptions.map((option) => {
+                return <option value={option.value}>{option.text}</option>;
+              })}
+            </Select>
+          )}
+        </Horizontal>
         <Vertical>{renderRows()}</Vertical>
         <Horizontal justify="center">
           <Text
