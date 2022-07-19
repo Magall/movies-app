@@ -1,4 +1,5 @@
 import { DiscoverSortMovie, DiscoverSortTv } from "./Enums";
+import { iSessionResponse } from "./interfaces";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w200/";
 const RED = "#b10240";
@@ -12,6 +13,11 @@ const EMPTY = {
   page: 0,
   total_results: 0,
   total_pages: 0,
+};
+
+const EMPTY_SESSION:iSessionResponse = {
+  success: false,
+  session_id: "",
 };
 
 const SORT_DISCOVER_MOVIES = [
@@ -37,4 +43,5 @@ export {
   EMPTY,
   SORT_DISCOVER_TV,
   SORT_DISCOVER_MOVIES,
+  EMPTY_SESSION,
 };

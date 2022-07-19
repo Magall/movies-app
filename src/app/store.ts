@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { get } from "immer/dist/internal";
+import authReducer from "../features/auth.slice";
 import alertReducer from "../features/alert.slice";
 import { api } from "../features/api";
 
 export const store = configureStore({
   reducer: {
     alert: alertReducer,
+    auth:authReducer,
     [api.reducerPath]: api.reducer,
-    
   },
 
   middleware: (getDefaultMiddleware) =>{

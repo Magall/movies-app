@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import { showAlert } from "../../features/alert.slice";
+import { setCredentials } from "../../features/auth.slice";
 // @ts-ignore
 import Input from "@/components/core/Input";
 import Button from "../../components/core/Button";
@@ -13,8 +15,10 @@ import { AlertType } from "../../Enums";
 import {
   useCreateUserSessionMutation,
   useFetchRequestTokenQuery,
+  useValidateRequestTokenMutation,
 } from "../../features/api";
 import { H2 } from "../../components/core/Titles";
+import AuthorizationWrapper from "../../components/core/AuthorizationWrapper";
 interface LoginInputs {
   login: string;
   password: string;
@@ -26,8 +30,9 @@ const schema = yup.object({
 });
 
 export default function Login() {
-  const [createUserSession, { data: createInfo }] =
-    useCreateUserSessionMutation();
+  const sessionIdSelector = useAppSelector((state) => state.auth.sessionId);
+  const [createUserSession] = useCreateUserSessionMutation();
+  const [validateRequestToken] = useValidateRequestTokenMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -42,13 +47,49 @@ export default function Login() {
       password: "",
     },
   });
-  const { data: requestToken } = useFetchRequestTokenQuery();
-  async function submitForm(data: LoginInputs) {
-    console.log(requestToken);
-    // createUserSession({ username: data.login, password: data.password });
-    // console.log(createInfo);
-    // navigate("/home");
+  const { data: requestToken, refetch: refetchRequestToken } =
+    useFetchRequestTokenQuery();
 
+  async function handleLogin(data: LoginInputs) {
+    try {
+      const validTokenResponse = await validateRequestToken({
+        username: data.login,
+        password: data.password,
+        requestToken: requestToken.request_token,
+      }).unwrap();
+
+      const createSessionResponse = await createUserSession(
+        validTokenResponse.request_token
+      ).unwrap();
+
+      dispatch(
+        setCredentials({
+          sessionId: createSessionResponse.session_id,
+          requestToken: validTokenResponse.request_token,
+          requestTokenExpiresAt: requestToken.expires_at,
+        })
+      );
+
+      const authStringifyed = JSON.stringify({
+        sessionId: createSessionResponse.session_id,
+        requestToken: validTokenResponse.request_token,
+        requestTokenExpiresAt: requestToken.expires_at,
+      });
+      sessionStorage.setItem("auth", authStringifyed);
+      navigate("/home");
+    } catch (e: any) {
+      console.log(e);
+      if (e.data.status_code === 33 && e.status === 401) {
+        dispatch(
+          setCredentials({
+            sessionId: "",
+            requestToken: "",
+            requestTokenExpiresAt: "",
+          })
+        );
+        refetchRequestToken();
+      }
+    }
     reset();
   }
 
@@ -69,24 +110,24 @@ export default function Login() {
   }, [errors.login, errors.password]);
 
   return (
-    <div id="LoginForm">
-      <form onSubmit={handleSubmit(submitForm)}>
-        <Vertical alignItems="center" widthPercent={50} makeOnCenter>
-          <H2>Movies World</H2>
-          <Input
-            type="text"
-            placeholder="Fill your email ..."
-            {...register("login")}
-          />
+      <div id="LoginForm">
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <Vertical alignItems="center" widthPercent={50} makeOnCenter>
+            <H2>Movies World</H2>
+            <Input
+              type="text"
+              placeholder="Fill your email ..."
+              {...register("login")}
+            />
 
-          <Input
-            type="password"
-            placeholder="Fill your password"
-            {...register("password")}
-          />
-          <Button type="submit">Login</Button>
-        </Vertical>
-      </form>
-    </div>
+            <Input
+              type="password"
+              placeholder="Fill your password"
+              {...register("password")}
+            />
+            <Button type="submit">Login</Button>
+          </Vertical>
+        </form>
+      </div>
   );
 }

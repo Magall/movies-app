@@ -1,29 +1,34 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
+import {
+  ActionCreatorWithPayload,
+  createAction,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 interface iAuth {
   sessionId: string;
   requestToken: string;
-  expiresAt: string;
+  requestTokenExpiresAt: string;
 }
 
 const initialState = {
-  sessionId: "",
-  requestToken: "",
-  expiresAt: "",
+  sessionId: "INVALID",
+  requestToken: "INVALID",
+  requestTokenExpiresAt: "INVALID",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials(state, action: PayloadAction<iAuth>) {
+    setCredentials: (state, action: PayloadAction<iAuth>) => {
         state.sessionId = action.payload.sessionId;
         state.requestToken = action.payload.requestToken;
-        state.expiresAt= action.payload.expiresAt;
+        state.requestTokenExpiresAt = action.payload.requestTokenExpiresAt;
+      },
     },
   },
-});
+);
 
-export const {setCredentials} = authSlice.actions
+export const { setCredentials } = authSlice.actions;
 export default authSlice.reducer;

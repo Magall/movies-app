@@ -25,6 +25,7 @@ import {
 } from "../features/api";
 import styled from "styled-components";
 import Text from "../components/core/Text";
+import AuthorizationWrapper from "../components/core/AuthorizationWrapper";
 
 const Row = styled.div`
   padding: 4px;
@@ -140,45 +141,47 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <section title="upcomming">
-        <H2>Upcomming</H2>
-        {sliderData.length > 1 ? (
-          <Slider cardData={sliderData} width={200}></Slider>
-        ) : null}
-      </section>
-
-      <Horizontal>
-        <section title="Trending">
-          <H2>Trending</H2>
-          <List
-            data={trending}
-            handleListSelected={useCallback(handleTrendingListChange, [])}
-            handlePageChange={handleTrendingListPageChange}
-            rowComponent={trendingRow}
-            radioElements={[
-              { id: 0, text: "Movies" },
-              { id: 1, text: "TV" },
-            ]}
-          />
+    <AuthorizationWrapper>
+      <div>
+        <section title="upcomming">
+          <H2>Upcomming</H2>
+          {sliderData.length > 1 ? (
+            <Slider cardData={sliderData} width={200}></Slider>
+          ) : null}
         </section>
 
-        <section title="Discover">
-          <H2>Discover</H2>
-          <List
-            data={discover}
-            handleListSelected={useCallback(handleDiscoverListChange, [])}
-            handlePageChange={handleDiscoverListPageChange}
-            handleSort={handleSort}
-            rowComponent={trendingRow}
-            radioElements={[
-              { id: 0, text: "Movies" },
-              { id: 1, text: "TV" },
-            ]}
-            sortOptions={sortOptions}
-          />
-        </section>
-      </Horizontal>
-    </div>
+        <Horizontal>
+          <section title="Trending">
+            <H2>Trending</H2>
+            <List
+              data={trending}
+              handleListSelected={useCallback(handleTrendingListChange, [])}
+              handlePageChange={handleTrendingListPageChange}
+              rowComponent={trendingRow}
+              radioElements={[
+                { id: 0, text: "Movies" },
+                { id: 1, text: "TV" },
+              ]}
+            />
+          </section>
+
+          <section title="Discover">
+            <H2>Discover</H2>
+            <List
+              data={discover}
+              handleListSelected={useCallback(handleDiscoverListChange, [])}
+              handlePageChange={handleDiscoverListPageChange}
+              handleSort={handleSort}
+              rowComponent={trendingRow}
+              radioElements={[
+                { id: 0, text: "Movies" },
+                { id: 1, text: "TV" },
+              ]}
+              sortOptions={sortOptions}
+            />
+          </section>
+        </Horizontal>
+      </div>
+    </AuthorizationWrapper>
   );
 }
