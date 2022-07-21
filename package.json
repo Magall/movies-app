@@ -12,6 +12,8 @@
     "@popperjs/core": "^2.11.5",
     "@reduxjs/toolkit": "^1.8.2",
     "@stylelint/postcss-css-in-js": "^0.38.0",
+    "@tanstack/react-query": "^4.0.5",
+    "@tanstack/react-query-devtools": "^4.0.6",
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
     "moment": "^2.29.4",

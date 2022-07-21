@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { CSSTransition } from "react-transition-group";
 import { AlertType } from "../../Enums";
 import Vertical from "./Vertical";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../hooks";
 import "./Alert.scss";
 
 interface iAlert {

@@ -37,9 +37,12 @@ export default function List(props: iList) {
   const [start, setStart] = useState(1);
 
   function renderRows() {
-    return props.data.results.map((el) => {
-      return props.rowComponent(el);
-    });
+    if(props.data?.results){
+
+      return props.data?.results.map((el) => {
+        return props.rowComponent(el);
+      });
+    }
   }
 
   function handlePrev() {
@@ -58,14 +61,14 @@ export default function List(props: iList) {
     let buttons = new Array(size);
 
     if (props.data.page < start && start - size > 0) {
-      setStart(start - size);
+      setStart(props.data.page - size);
     }
 
     if (props.data.page > start + size) {
       setStart(props.data.page);
     }
 
-    for (let i = start; i <= start + (size - 1); i++) {
+    for (let i = start; i <= start+size; i++) {
       buttons.push(
         <Text
           key={i}

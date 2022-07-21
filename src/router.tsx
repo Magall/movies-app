@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./views/login/Login";
 import Home from "./views/Home";
 import SearchResult from "./views/SearchResult";
-import { useAppSelector } from "./app/hooks";
+import { useAppSelector } from "./hooks";
 
 export default function MyRouter() {
   return (

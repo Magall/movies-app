@@ -3,10 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { useAppSelector } from "../../app/hooks";
-import { showAlert } from "../../features/alert.slice";
-import { setCredentials } from "../../features/auth.slice";
+import { useAppDispatch } from "../../hooks";
+import { useAppSelector } from "../../hooks";
+import { showAlert } from "../../store/alert.slice";
+import { setCredentials } from "../../store/auth.slice";
 // @ts-ignore
 import Input from "@/components/core/Input";
 import Button from "../../components/core/Button";
@@ -16,8 +16,9 @@ import {
   useCreateUserSessionMutation,
   useFetchRequestTokenQuery,
   useValidateRequestTokenMutation,
-} from "../../features/api";
+} from "../../store/api";
 import { H2 } from "../../components/core/Titles";
+import { Http2ServerResponse } from "http2";
 import AuthorizationWrapper from "../../components/core/AuthorizationWrapper";
 interface LoginInputs {
   login: string;
@@ -80,6 +81,7 @@ export default function Login() {
     } catch (e: any) {
       console.log(e);
       if (e.data.status_code === 33 && e.status === 401) {
+        console.log("sds");
         dispatch(
           setCredentials({
             sessionId: "",

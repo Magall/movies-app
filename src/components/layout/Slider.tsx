@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { useCurrentWidth } from "../../app/hooks";
+import { useCurrentWidth } from "../../hooks";
 import Horizontal from "../core/Horizontal";
 import Card from "./Card";
 import styled from "styled-components";

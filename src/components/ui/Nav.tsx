@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import styled from "styled-components";
 import SearchInput from "../layout/SearchInput";
-import { useLazyFetchMoviesQuery } from "../../features/api";
 
+import { useGetMultiSearch } from "../../hooks/api/Search";
 const TopBar = styled.div`
   background: linear-gradient(#471f38, #b10240);
   color: white;
@@ -26,19 +26,13 @@ const Subtitle = styled.span`
 
 export default function Nav() {
   const [movieQuery, setMovieQuery] = useState("");
-  const [trigger, { data, isSuccess }] = useLazyFetchMoviesQuery();
+  const { data: searchResult, isSuccess } = useGetMultiSearch(movieQuery);
 
-  useEffect(() => {
-    if (movieQuery.length > 2) {
-      trigger(movieQuery);
-    }
-  },[movieQuery]);
-  
   return (
     <div>
       <TopBar>
         <Title>Movies World</Title>
-    
+
         <Subtitle>My Lists</Subtitle>
         <Subtitle>Exit</Subtitle>
 
@@ -46,7 +40,7 @@ export default function Nav() {
           setSearchQuery={setMovieQuery}
           isSuccess={isSuccess}
           searchQuery={movieQuery}
-          searchResult={data}
+          searchResult = {searchResult}
         />
       </TopBar>
     </div>

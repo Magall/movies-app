@@ -1,4 +1,4 @@
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../hooks";
 import { setCredentials } from "./auth.slice";
 import { MediaType } from "../Enums";
 import { Dispatch } from "@reduxjs/toolkit";
