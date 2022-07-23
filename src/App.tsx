@@ -8,21 +8,35 @@ import { setCredentials } from "./store/auth.slice";
 import { useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
+
 function App() {
   const requestToken = useAppSelector((state) => state.auth.requestToken);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  
+  const location = useLocation();
   const queryClient = new QueryClient();
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (requestToken === "EXPIRED" && location.pathname !== "/") {
+      navigate("/", { replace: true });
+    }
+
+    if (requestToken === "INVALID") {
+      let authData = sessionStorage.getItem("auth");
+      if (authData) {
+        const parsed = JSON.parse(authData);
+        dispatch(setCredentials(parsed));
+      }
+    }
+  },[requestToken]);
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
-         <Nav />
+        <Nav />
         <Alert />
         <MyRouter />
         <ReactQueryDevtools initialIsOpen={false} />
-
       </QueryClientProvider>
     </div>
   );

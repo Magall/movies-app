@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks";
-import { useAppSelector } from "../../hooks";
 import { showAlert } from "../../store/alert.slice";
 import { setCredentials } from "../../store/auth.slice";
 // @ts-ignore
@@ -12,14 +11,14 @@ import Input from "@/components/core/Input";
 import Button from "../../components/core/Button";
 import Vertical from "../../components/core/Vertical";
 import { AlertType } from "../../Enums";
-import {
-  useCreateUserSessionMutation,
-  useFetchRequestTokenQuery,
-  useValidateRequestTokenMutation,
-} from "../../store/api";
 import { H2 } from "../../components/core/Titles";
-import { Http2ServerResponse } from "http2";
 import AuthorizationWrapper from "../../components/core/AuthorizationWrapper";
+import {
+  useCreateUserSession,
+  useGetRequestToken,
+  useValidateRequestToken,
+} from "../../hooks/api/Auth";
+
 interface LoginInputs {
   login: string;
   password: string;
@@ -31,10 +30,13 @@ const schema = yup.object({
 });
 
 export default function Login() {
-  const sessionIdSelector = useAppSelector((state) => state.auth.sessionId);
-  const [createUserSession] = useCreateUserSessionMutation();
-  const [validateRequestToken] = useValidateRequestTokenMutation();
+  // const sessionIdSelector = useAppSelector((state) => state.auth.sessionId);
+
+  const { data: requestToken } = useGetRequestToken();
+  const validateRequestToken = useValidateRequestToken();
+  const createUserSession = useCreateUserSession();
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const {
     register,
@@ -48,50 +50,41 @@ export default function Login() {
       password: "",
     },
   });
-  const { data: requestToken, refetch: refetchRequestToken } =
-    useFetchRequestTokenQuery();
 
   async function handleLogin(data: LoginInputs) {
-    try {
-      const validTokenResponse = await validateRequestToken({
-        username: data.login,
-        password: data.password,
-        requestToken: requestToken.request_token,
-      }).unwrap();
+    if (requestToken) {
+      try {
+        const validToken = await validateRequestToken.mutateAsync({
+          username: data.login,
+          password: data.password,
+          requestToken: requestToken.request_token,
+        });
 
-      const createSessionResponse = await createUserSession(
-        validTokenResponse.request_token
-      ).unwrap();
+        const session = await createUserSession.mutateAsync(
+          validToken.request_token
+        );
 
-      dispatch(
-        setCredentials({
-          sessionId: createSessionResponse.session_id,
-          requestToken: validTokenResponse.request_token,
-          requestTokenExpiresAt: requestToken.expires_at,
-        })
-      );
-
-      const authStringifyed = JSON.stringify({
-        sessionId: createSessionResponse.session_id,
-        requestToken: validTokenResponse.request_token,
-        requestTokenExpiresAt: requestToken.expires_at,
-      });
-      sessionStorage.setItem("auth", authStringifyed);
-      navigate("/home");
-    } catch (e: any) {
-      console.log(e);
-      if (e.data.status_code === 33 && e.status === 401) {
-        console.log("sds");
         dispatch(
           setCredentials({
-            sessionId: "",
-            requestToken: "",
-            requestTokenExpiresAt: "",
+            sessionId: session.session_id,
+            requestToken: requestToken.request_token,
+            requestTokenExpiresAt: requestToken.expires_at,
           })
         );
-        refetchRequestToken();
+        sessionStorage.setItem(
+          "auth",
+          JSON.stringify({
+            sessionId: session.session_id,
+            requestToken: requestToken.request_token,
+            requestTokenExpiresAt: requestToken.expires_at,
+          })
+        );
+        navigate("/home");
+      } catch (e) {
+        console.log(e);
       }
     }
+
     reset();
   }
 
@@ -112,24 +105,24 @@ export default function Login() {
   }, [errors.login, errors.password]);
 
   return (
-      <div id="LoginForm">
-        <form onSubmit={handleSubmit(handleLogin)}>
-          <Vertical alignItems="center" widthPercent={50} makeOnCenter>
-            <H2>Movies World</H2>
-            <Input
-              type="text"
-              placeholder="Fill your email ..."
-              {...register("login")}
-            />
+    <div id="LoginForm">
+      <form onSubmit={handleSubmit(handleLogin)}>
+        <Vertical alignItems="center" widthPercent={50} makeOnCenter>
+          <H2>Movies World</H2>
+          <Input
+            type="text"
+            placeholder="Fill your email ..."
+            {...register("login")}
+          />
 
-            <Input
-              type="password"
-              placeholder="Fill your password"
-              {...register("password")}
-            />
-            <Button type="submit">Login</Button>
-          </Vertical>
-        </form>
-      </div>
+          <Input
+            type="password"
+            placeholder="Fill your password"
+            {...register("password")}
+          />
+          <Button type="submit">Login</Button>
+        </Vertical>
+      </form>
+    </div>
   );
 }

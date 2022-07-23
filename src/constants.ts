@@ -1,5 +1,5 @@
 import { DiscoverSortMovie, DiscoverSortTv } from "./Enums";
-import { iSessionResponse } from "./interfaces";
+import { iLogin, iSessionResponse } from "./interfaces";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w200/";
 const RED = "#b10240";
@@ -19,6 +19,12 @@ const EMPTY_SESSION:iSessionResponse = {
   success: false,
   session_id: "",
 };
+
+const EMPTY_LOGIN: iLogin ={
+  username:'',
+  password:'',
+  requestToken:''
+}
 
 const SORT_DISCOVER_MOVIES = [
   { text: "Popularity", value: DiscoverSortMovie.Popularity },
@@ -44,4 +50,5 @@ export {
   SORT_DISCOVER_TV,
   SORT_DISCOVER_MOVIES,
   EMPTY_SESSION,
+  EMPTY_LOGIN
 };
