@@ -31,13 +31,11 @@ const SORT_DISCOVER_MOVIES = [
   { text: "Average", value: DiscoverSortMovie.Average },
   { text: "Revenue", value: DiscoverSortMovie.Revenue },
   { text: "Votes", value: DiscoverSortMovie.VoteCount },
-  { text: "Release Date", value: DiscoverSortMovie.ReleaseDate },
 ];
 
 const SORT_DISCOVER_TV = [
   { text: "Popularity", value: DiscoverSortTv.Popularity },
   { text: "Average", value: DiscoverSortTv.Average },
-  { text: "Release Date", value: DiscoverSortTv.AirDate },
 ];
 export {
   IMG_BASE_URL,

@@ -23,7 +23,7 @@ interface SelectorElement {
 }
 
 interface iList {
-  data: iMultiSearchResponse;
+  data: iMultiSearchResponse ;
   rowComponent: Function;
   handlePageChange: Function;
   handleListSelected?: Function;
