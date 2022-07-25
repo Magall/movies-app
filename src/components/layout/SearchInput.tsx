@@ -88,7 +88,7 @@ export default function SearchInput(props: iSearchInput) {
     if (props.searchResult) {
       const recordsToShow = props.searchResult.results.slice(0, 4);
       const resp = recordsToShow.map((el: iMultiSearch, i: number) => {
-        return SimpleListRow(el);
+        return <SimpleListRow data={el} />
       });
       return resp;
     }

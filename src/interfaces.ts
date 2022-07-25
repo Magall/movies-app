@@ -58,23 +58,52 @@ interface iDiscoverRequest {
 }
 
 interface iRequestTokenResponse {
-  success:boolean;
-  expires_at:string;
-  request_token:string;
+  success: boolean;
+  expires_at: string;
+  request_token: string;
 }
 
 interface iSessionResponse {
-  success:boolean;
-  session_id:string;
+  success: boolean;
+  session_id: string;
 }
 
 interface iLogin {
-  username:string;
-  password:string;
-  requestToken:string;
+  username: string;
+  password: string;
+  requestToken: string;
 }
+
+interface iMotionRequest {
+  mediaType?: MediaType | string;
+  motionId?: string;
+}
+
+interface iMotionDetailsResponse {
+  id: number;
+  budget?: number;
+  homepage?: string;
+  original_title?: string;
+  popularity?: number;
+  poster_path?: string;
+  overview?: string;
+}
+
+interface iMotionCreditsResponse {
+  id: number;
+  cast: Array<iCast>;
+}
+
+interface iCast {
+  id: number;
+  name: string;
+  profile_path: string;
+  popularity: number;
+}
+
 export type {
   iAlertStatus,
+  iMotionCreditsResponse,
   iMultiSearchResponse,
   apiResponse,
   iMultiSearch,
@@ -84,5 +113,7 @@ export type {
   iDiscoverRequest,
   iRequestTokenResponse,
   iSessionResponse,
-  iLogin
+  iLogin,
+  iMotionDetailsResponse,
+  iMotionRequest,
 };

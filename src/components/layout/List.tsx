@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Selector from "./Radio";
 import { Select } from "../core/Select";
+import { SimpleListRow } from "./SimpleListRow";
 
 const ListContainer = styled.div`
   background: ${RED};
@@ -40,7 +41,7 @@ export default function List(props: iList) {
     if(props.data?.results){
 
       return props.data?.results.map((el) => {
-        return props.rowComponent(el);
+        return <props.rowComponent data={el}/>
       });
     }
   }

@@ -5,8 +5,8 @@ enum AlertType {
 }
 
 enum MediaType {
-  Movies,
-  TV,
+  Movies ='movie',
+  TV = 'tv',
 }
 
 enum ListAction {

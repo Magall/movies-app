@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { IMG_BASE_URL } from "../../constants";
 import { useFormatDate } from "../../hooks";
+import { useNavigate } from "react-router-dom";
 import { iMultiSearch } from "../../interfaces";
 import Horizontal from "../core/Horizontal";
 import { Image as Img } from "../core/Img";
@@ -9,20 +10,34 @@ import Text from "../core/Text";
 
 const Row = styled.div`
   padding: 4px;
+  cursor: pointer;
 `;
 
 const TextContainer = styled.div`
   margin-left: 12px;
 `;
 
-export function SimpleListRow(props: iMultiSearch) {
+interface iSimpleRow {
+  data: iMultiSearch;
+}
 
+export function SimpleListRow(props: iSimpleRow) {
+  const navigate = useNavigate();
+
+  function handleNavigate() {
+    console.log("á");
+    if (props.data.release_date) {
+      navigate(`/movie/${props.data.id}`);
+    } else {
+      navigate(`tv/${props.data.id}`);
+    }
+  }
 
   return (
-    <Row key={props.id}>
-      <Horizontal color="white" key={props.id}>
+    <Row key={props.data.id} onClick={handleNavigate}>
+      <Horizontal color="white" key={props.data.id}>
         <Img
-          path={IMG_BASE_URL + props.backdrop_path}
+          path={IMG_BASE_URL + props.data.backdrop_path}
           width="200px"
           height="113px"
         />
@@ -30,14 +45,14 @@ export function SimpleListRow(props: iMultiSearch) {
         <TextContainer>
           <Vertical>
             <Text color="white" fontWeight="800" margin="8px 0px">
-              {props.title || props.name}
+              {props.data.title || props.data.name}
             </Text>
             <Text color="white" fontWeight="800" margin="8px 0px">
-            Vote Average: {props.vote_average}
+              Vote Average: {props.data.vote_average}
             </Text>
             <Text color="white" fontWeight="800" margin="4px 0px">
-              {useFormatDate(props.release_date) ||
-                useFormatDate(props.first_air_date)}
+              {useFormatDate(props.data.release_date) ||
+                useFormatDate(props.data.first_air_date)}
             </Text>
           </Vertical>
         </TextContainer>
