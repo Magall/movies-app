@@ -79,6 +79,10 @@ interface iMotionRequest {
   motionId?: string;
 }
 
+interface iGenre{
+  id:number;
+  text:string;
+}
 interface iMotionDetailsResponse {
   id: number;
   budget?: number;
@@ -87,6 +91,10 @@ interface iMotionDetailsResponse {
   popularity?: number;
   poster_path?: string;
   overview?: string;
+  tagline?:string;
+  genres?:Array<iGenre>
+  
+
 }
 
 interface iMotionCreditsResponse {

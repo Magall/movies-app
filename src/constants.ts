@@ -1,7 +1,7 @@
 import { DiscoverSortMovie, DiscoverSortTv } from "./Enums";
 import { iLogin, iSessionResponse } from "./interfaces";
 
-const IMG_BASE_URL = "https://image.tmdb.org/t/p/w200/";
+const IMG_BASE_URL = "https://image.tmdb.org/t/p/w300/";
 const RED = "#b10240";
 const DARK_PURPLE = "#471f38";
 const BLACK = "#282323";
