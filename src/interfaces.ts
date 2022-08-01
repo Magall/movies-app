@@ -94,7 +94,8 @@ interface iMotionDetailsResponse {
   tagline?: string;
   genres?: Array<iGenre>;
   runtime?:number;
-  release_date:Date
+  release_date:Date;
+  name:string;
 }
 
 interface iMotionCreditsResponse {

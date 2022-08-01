@@ -10,9 +10,10 @@ import Horizontal from "../components/core/Horizontal";
 import Vertical from "../components/core/Vertical";
 import { MotionInfoText } from "../components/core/Titles";
 import Text from "../components/core/Text";
-import { generateKey } from "crypto";
-import { useFormatDate } from "../hooks";
-import { useGetYear } from "../hooks/useFormatDate";
+import { useGetYear } from "../hooks/useDate";
+import { useMemo } from "react";
+import { MediaType } from "../Enums";
+
 const MotionContainer = styled.div`
   background: ${RED};
   width: 95%;
@@ -30,14 +31,23 @@ export function MotionDetails() {
     mediaType,
     motionId,
   });
-  //DOING FAVORITE HEART BUTTON
+  const isTv = useMemo(() => {
+    return mediaType === MediaType.TV;
+  }, [mediaType]);
+
+  //TODO FAVORITE HEART BUTTON
   //TODO RATE STARS
   //TODO CAST LIST WITH SCROLL
   //TODO RECOMENDATIONS SLIDER
   return (
     <div>
       <Vertical alignItems="center" margin="auto auto 16px auto ;">
-        <H2 marginBottom={0}>{details?.original_title}</H2>
+        {isTv ? (
+          <H2 marginBottom={0}>{details?.name}</H2>
+        ) : (
+          <H2 marginBottom={0}>{details?.original_title}</H2>
+        )}
+
         <MotionInfoText>{details?.tagline}</MotionInfoText>
       </Vertical>
       <MotionContainer>

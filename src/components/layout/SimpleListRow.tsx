@@ -25,11 +25,10 @@ export function SimpleListRow(props: iSimpleRow) {
   const navigate = useNavigate();
 
   function handleNavigate() {
-    console.log("á");
     if (props.data.release_date) {
       navigate(`/movie/${props.data.id}`);
     } else {
-      navigate(`tv/${props.data.id}`);
+      navigate(`/tv/${props.data.id}`);
     }
   }
 

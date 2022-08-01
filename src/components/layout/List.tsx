@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import Selector from "./Radio";
 import { Select } from "../core/Select";
-import { SimpleListRow } from "./SimpleListRow";
 
 const ListContainer = styled.div`
   background: ${RED};
