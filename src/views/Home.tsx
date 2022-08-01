@@ -132,6 +132,7 @@ export default function Home() {
               handleListSelected={useCallback(handleDiscoverListChange, [])}
               handlePageChange={handleDiscoverListPageChange}
               handleSort={handleSort}
+              
               rowComponent={SimpleListRow}
               radioElements={[
                 { id: 0, text: "Movies" },
