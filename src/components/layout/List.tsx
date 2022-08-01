@@ -71,8 +71,7 @@ export default function List(props: iList) {
       buttons.push(
         <Text
           color={i === props.data.page ? GOLD : "white"}
-         
-         //Console about keys is here when there are 2 + lists the page numbers key get duplicated, but I can not fix it yet.
+          //Console about keys is here when there are 2 + lists the page numbers key get duplicated, but I can not fix it yet.
           key={Math.random()}
           fontWeight="600"
           margin="0px 8px"
