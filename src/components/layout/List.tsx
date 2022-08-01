@@ -23,7 +23,7 @@ interface SelectorElement {
 }
 
 interface iList {
-  data: iMultiSearchResponse ;
+  data: iMultiSearchResponse;
   rowComponent: Function;
   handlePageChange: Function;
   handleListSelected?: Function;
@@ -37,10 +37,9 @@ export default function List(props: iList) {
   const [start, setStart] = useState(1);
 
   function renderRows() {
-    if(props.data?.results){
-
+    if (props.data?.results) {
       return props.data?.results.map((el) => {
-        return <props.rowComponent data={el}/>
+        return <props.rowComponent data={el} />;
       });
     }
   }
@@ -68,11 +67,13 @@ export default function List(props: iList) {
       setStart(props.data.page);
     }
 
-    for (let i = start; i <= start+size; i++) {
+    for (let i = start; i <= start + size; i++) {
       buttons.push(
         <Text
-          key={i}
           color={i === props.data.page ? GOLD : "white"}
+         
+         //Console about keys is here when there are 2 + lists the page numbers key get duplicated, but I can not fix it yet.
+          key={Math.random()}
           fontWeight="600"
           margin="0px 8px"
           onClick={() => props.handlePageChange(i)}

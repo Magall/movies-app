@@ -7,6 +7,8 @@ import Horizontal from "../core/Horizontal";
 import { Image as Img } from "../core/Img";
 import Vertical from "../core/Vertical";
 import Text from "../core/Text";
+import { useMemo } from "react";
+import { MediaType } from "../../Enums";
 
 const Row = styled.div`
   padding: 4px;
@@ -23,17 +25,16 @@ interface iSimpleRow {
 
 export function SimpleListRow(props: iSimpleRow) {
   const navigate = useNavigate();
+  const mediaType = useMemo(() => {
+    return props.data.release_date ? MediaType.Movies : MediaType.TV;
+  }, [props.data.release_date]);
 
   function handleNavigate() {
-    if (props.data.release_date) {
-      navigate(`/movie/${props.data.id}`);
-    } else {
-      navigate(`/tv/${props.data.id}`);
-    }
+    navigate(`/${mediaType}/${props.data.id}`);
   }
 
   return (
-    <Row key={props.data.id} onClick={handleNavigate}>
+    <Row key={props.data.id + mediaType} onClick={handleNavigate}>
       <Horizontal color="white" key={props.data.id}>
         <Img
           path={IMG_BASE_URL + props.data.backdrop_path}

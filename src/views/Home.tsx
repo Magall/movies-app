@@ -112,6 +112,7 @@ export default function Home() {
           <section title="Trending">
             <H2>Trending</H2>
             <List
+            key={'trending'}
               data={trending}
               handleListSelected={useCallback(handleTrendingListChange, [])}
               handlePageChange={handleTrendingListPageChange}
@@ -127,6 +128,7 @@ export default function Home() {
             <H2>Discover</H2>
             <List
               data={discover}
+              key={'discover'}
               handleListSelected={useCallback(handleDiscoverListChange, [])}
               handlePageChange={handleDiscoverListPageChange}
               handleSort={handleSort}
