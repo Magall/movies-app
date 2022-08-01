@@ -23,6 +23,8 @@ client.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    //TODO handle errors by calling the alert
     if (error.status === 401) {
       store.dispatch(
         setCredentials({

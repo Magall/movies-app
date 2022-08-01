@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./views/login/Login";
 import Home from "./views/Home";
 import SearchResult from "./views/SearchResult";
-import { MovieOrTvDetail } from "./views/MotionDetail";
+import { MotionDetails } from "./views/MotionDetail";
 
 export default function MyRouter() {
   return (
@@ -10,7 +10,7 @@ export default function MyRouter() {
       <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/result" element={<SearchResult />} />
-        <Route path="/:mediaType/:motionId" element={<MovieOrTvDetail/>}/>
+        <Route path="/:mediaType/:motionId" element={<MotionDetails/>}/>
 
     </Routes>
   );

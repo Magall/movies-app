@@ -9,6 +9,10 @@ import { Image } from "../components/core/Img";
 import Horizontal from "../components/core/Horizontal";
 import Vertical from "../components/core/Vertical";
 import { MotionInfoText } from "../components/core/Titles";
+import Text from "../components/core/Text";
+import { generateKey } from "crypto";
+import { useFormatDate } from "../hooks";
+import { useGetYear } from "../hooks/useFormatDate";
 const MotionContainer = styled.div`
   background: ${RED};
   width: 95%;
@@ -17,7 +21,7 @@ const MotionContainer = styled.div`
   padding: 16px;
 `;
 
-export function MovieOrTvDetail() {
+export function MotionDetails() {
   const urlParms = useParams();
   const { mediaType, motionId } = urlParms;
   const { data: credits } = useGetMotionCredits({ mediaType, motionId });
@@ -26,7 +30,7 @@ export function MovieOrTvDetail() {
     mediaType,
     motionId,
   });
-  //TODO FAVORITE HEART
+  //DOING FAVORITE HEART BUTTON
   //TODO RATE STARS
   //TODO CAST LIST WITH SCROLL
   //TODO RECOMENDATIONS SLIDER
@@ -43,10 +47,26 @@ export function MovieOrTvDetail() {
             height="auto"
             path={IMG_BASE_URL + details?.poster_path}
           />
-          <Vertical margin=" 0px 16px">
+          <Vertical margin="0px 16px">
             <MotionInfoTitles>Overview</MotionInfoTitles>
             <MotionInfoText>{details?.overview}</MotionInfoText>
-            <span>{details?.budget}</span>
+
+            <Horizontal>
+              {details?.genres?.map((genre) => {
+                return (
+                  <Text color="white" fontWeight="600" key={genre.id}>
+                    {genre.name},&nbsp;{" "}
+                  </Text>
+                );
+              })}
+              <Text color="white" fontWeight="900">
+                {details?.runtime} Min, &nbsp;
+              </Text>
+
+              <Text color="white" fontWeight="900">
+                {useGetYear(details?.release_date)}
+              </Text>
+            </Horizontal>
           </Vertical>
         </Horizontal>
       </MotionContainer>

@@ -79,9 +79,9 @@ interface iMotionRequest {
   motionId?: string;
 }
 
-interface iGenre{
-  id:number;
-  text:string;
+interface iGenre {
+  id: number;
+  name: string;
 }
 interface iMotionDetailsResponse {
   id: number;
@@ -91,10 +91,10 @@ interface iMotionDetailsResponse {
   popularity?: number;
   poster_path?: string;
   overview?: string;
-  tagline?:string;
-  genres?:Array<iGenre>
-  
-
+  tagline?: string;
+  genres?: Array<iGenre>;
+  runtime?:number;
+  release_date:Date
 }
 
 interface iMotionCreditsResponse {
@@ -107,6 +107,12 @@ interface iCast {
   name: string;
   profile_path: string;
   popularity: number;
+}
+
+interface iAccountDetailsResponse {
+  id: number;
+  name: string;
+  username: string;
 }
 
 export type {
@@ -124,4 +130,5 @@ export type {
   iLogin,
   iMotionDetailsResponse,
   iMotionRequest,
+  iAccountDetailsResponse,
 };

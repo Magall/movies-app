@@ -18,10 +18,8 @@ const MotionInfoTitles = styled.span`
 `;
 
 const MotionInfoText = styled.p`
-  margin:0;
   font-weight:600;
   font-size:16px;
   color:white;
-  margin:8px;
 `;
 export { H2, MotionInfoText,MotionInfoTitles};
