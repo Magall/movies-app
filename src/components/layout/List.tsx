@@ -1,12 +1,12 @@
-import { iMultiSearchResponse } from "../../interfaces";
+import {iMultiSearchResponse} from "../../interfaces";
 import Vertical from "../core/Vertical";
 import Text from "../core/Text";
 import Horizontal from "../core/Horizontal";
-import { GOLD, RED } from "../../constants";
+import {GOLD, RED} from "../../constants";
 import styled from "styled-components";
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import Selector from "./Radio";
-import { Select } from "../core/Select";
+import {Select} from "../core/Select";
 
 const ListContainer = styled.div`
   background: ${RED};
@@ -34,12 +34,12 @@ interface iList {
 
 export default function List(props: iList) {
   const size = 5;
-  const [start, setStart] = useState(1);
+  const [firstPageButton, setFirstPageButton] = useState(1);
 
   function renderRows() {
     if (props.data?.results) {
       return props.data?.results.map((el) => {
-        return <props.rowComponent data={el} />;
+        return <props.rowComponent data={el}/>;
       });
     }
   }
@@ -56,18 +56,28 @@ export default function List(props: iList) {
     }
   }
 
-  function renderListButtons() {
+  const reachedLastPageButton = useMemo(
+    () => props.data.page > firstPageButton + size,
+    [props.data.page, firstPageButton, size]
+  );
+
+  const firstRenderReachedLastPageButton = useMemo(
+    () => props.data.page < firstPageButton && firstPageButton - size > 0,
+    [props.data.page, firstPageButton, size]
+  );
+
+  function renderPageNumbers() {
     let buttons = new Array(size);
 
-    if (props.data.page < start && start - size > 0) {
-      setStart(props.data.page - size);
+    if (firstRenderReachedLastPageButton) {
+      setFirstPageButton(props.data.page - size);
     }
 
-    if (props.data.page > start + size) {
-      setStart(props.data.page);
+    if (reachedLastPageButton) {
+      setFirstPageButton(props.data.page);
     }
 
-    for (let i = start; i <= start + size; i++) {
+    for (let i = firstPageButton; i <= firstPageButton + size; i++) {
       buttons.push(
         <Text
           color={i === props.data.page ? GOLD : "white"}
@@ -116,7 +126,7 @@ export default function List(props: iList) {
           >
             Previous
           </Text>
-          {renderListButtons()}
+          {renderPageNumbers()}
           <Text
             fontWeight="600"
             color="white"
