@@ -5,36 +5,39 @@ import {
   SORT_DISCOVER_MOVIES,
   SORT_DISCOVER_TV,
 } from "../constants";
-import {
-  iDiscoverRequest,
-  iMultiSearchResponse,
-} from "../interfaces";
+import { iDiscoverRequest, iMultiSearchResponse } from "../interfaces";
 import Slider from "../components/layout/Slider";
 import { H2 } from "../components/core/Titles";
 import List from "../components/layout/List";
-import { MediaType, DiscoverSortMovie } from "../Enums";
+import { DiscoverSortMovie, MediaType } from "../Enums";
 import Horizontal from "../components/core/Horizontal";
 import { useGetUpCommingMovies } from "../hooks/api/UpComming";
 import { useGetTrending } from "../hooks/api/Trending";
 import { useGetDiscover } from "../hooks/api/Discover";
 import { SimpleListRow } from "../components/layout/SimpleListRow";
 import AuthorizationWrapper from "../components/core/AuthorizationWrapper";
+import { useAppSelector } from "../hooks";
+import {useAppDispatch} from "../hooks";
 
 export default function Home() {
+  const listsActiveMediaType = useAppSelector((state) => state.activeList);
+  const dispatch = useAppDispatch();
   const { data: upcoming } = useGetUpCommingMovies(1);
   const [TrendingRequestData, setTrendingRequestData] = useState({
-    mediaType: "movie",
+    mediaType: listsActiveMediaType.trending,
     timeWindow: "week",
     page: 1,
   });
 
-  const { data: trending = EMPTY } = useGetTrending(TrendingRequestData);
+  const { data: trending = EMPTY, isSuccess: trendingSuccess } =
+    useGetTrending(TrendingRequestData);
   const [discoverParams, setDiscoverParams] = useState<iDiscoverRequest>({
-    media_type: MediaType.Movies,
+    media_type: listsActiveMediaType.discover,
     sort_by: DiscoverSortMovie.Popularity,
     page: 1,
   });
-  const { data: discover = EMPTY } = useGetDiscover(discoverParams);
+  const { data: discover = EMPTY, isSuccess: discoverSuccess } =
+    useGetDiscover(discoverParams);
   const sortOptions = useMemo(() => {
     if (discoverParams.media_type === MediaType.Movies) {
       return SORT_DISCOVER_MOVIES;
@@ -46,7 +49,7 @@ export default function Home() {
 
     return [];
   }, [discoverParams.media_type]);
-  
+
   const sliderData = useMemo(() => formatDataToSlider(upcoming), [upcoming]);
 
   function formatDataToSlider(rawData: iMultiSearchResponse = EMPTY) {
@@ -67,18 +70,22 @@ export default function Home() {
       page: currentPage,
     };
     setTrendingRequestData(args);
+    if (trendingSuccess) {
+
+    }
   }
 
-  function handleTrendingListChange(activeMedia: MediaType) {
+  function handleTrendingMotionChange(activeMedia: MediaType) {
     let args = {
       timeWindow: "week",
-      mediaType: activeMedia === MediaType.Movies ? "movie" : "tv",
+      mediaType:
+        activeMedia === MediaType.Movies ? MediaType.Movies : MediaType.TV,
       page: 1,
     };
     setTrendingRequestData(args);
   }
 
-  function handleDiscoverListChange(activeMedia: MediaType) {
+  function handleDiscoverMotionChange(activeMedia: MediaType) {
     let args = { ...discoverParams };
     args.media_type = activeMedia;
     args.page = 1;
@@ -112,9 +119,12 @@ export default function Home() {
           <section title="Trending">
             <H2>Trending</H2>
             <List
-            key={'trending'}
+              key={"trending"}
               data={trending}
-              handleListSelected={useCallback(handleTrendingListChange, [])}
+              handleActiveListChange={useCallback(
+                handleTrendingMotionChange,
+                []
+              )}
               handlePageChange={handleTrendingListPageChange}
               rowComponent={SimpleListRow}
               radioElements={[
@@ -128,11 +138,13 @@ export default function Home() {
             <H2>Discover</H2>
             <List
               data={discover}
-              key={'discover'}
-              handleListSelected={useCallback(handleDiscoverListChange, [])}
+              key={"discover"}
+              handleActiveListChange={useCallback(
+                handleDiscoverMotionChange,
+                []
+              )}
               handlePageChange={handleDiscoverListPageChange}
               handleSort={handleSort}
-              
               rowComponent={SimpleListRow}
               radioElements={[
                 { id: 0, text: "Movies" },

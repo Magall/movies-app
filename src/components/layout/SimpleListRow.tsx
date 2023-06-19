@@ -29,12 +29,8 @@ export function SimpleListRow(props: iSimpleRow) {
     return props.data.release_date ? MediaType.Movies : MediaType.TV;
   }, [props.data.release_date]);
 
-  function handleNavigate() {
-    navigate(`/${mediaType}/${props.data.id}`);
-  }
-
   return (
-    <Row key={props.data.id + mediaType} onClick={handleNavigate}>
+    <Row key={props.data.id + mediaType}>
       <Horizontal color="white" key={props.data.id}>
         <Img
           path={IMG_BASE_URL + props.data.backdrop_path}

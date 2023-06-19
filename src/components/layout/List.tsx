@@ -1,12 +1,12 @@
-import {iMultiSearchResponse} from "../../interfaces";
+import { iMultiSearchResponse } from "../../interfaces";
 import Vertical from "../core/Vertical";
 import Text from "../core/Text";
 import Horizontal from "../core/Horizontal";
-import {GOLD, RED} from "../../constants";
+import { GOLD, RED } from "../../constants";
 import styled from "styled-components";
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
 import Selector from "./Radio";
-import {Select} from "../core/Select";
+import { Select } from "../core/Select";
 
 const ListContainer = styled.div`
   background: ${RED};
@@ -26,7 +26,7 @@ interface iList {
   data: iMultiSearchResponse;
   rowComponent: Function;
   handlePageChange: Function;
-  handleListSelected?: Function;
+  handleActiveListChange?: Function;
   handleSort?: Function;
   radioElements: Array<SelectorElement>;
   sortOptions?: Array<any>;
@@ -39,7 +39,7 @@ export default function List(props: iList) {
   function renderRows() {
     if (props.data?.results) {
       return props.data?.results.map((el) => {
-        return <props.rowComponent data={el}/>;
+        return <props.rowComponent data={el} />;
       });
     }
   }
@@ -98,9 +98,9 @@ export default function List(props: iList) {
     <div>
       <ListContainer>
         <Horizontal justify="space-between">
-          {props.handleListSelected && (
+          {props.handleActiveListChange && (
             <Selector
-              onChangeCallBack={props.handleListSelected}
+              onChangeCallBack={props.handleActiveListChange}
               radioElements={props.radioElements}
             />
           )}
